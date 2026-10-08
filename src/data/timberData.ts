@@ -36,15 +36,17 @@ export const TRANSPORT_SPECS: Record<'container_40hc' | 'mega_truck_136', Transp
   },
 };
 
+const siteAsset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
+
 export const OFFICIAL_IMAGES = {
-  heroLogs: '/images/hero-logs.webp',
-  sawingLine: '/images/sawing-line.webp',
-  logYard: '/images/log-yard.webp',
-  sortedPiles: '/images/sorted-piles.webp',
-  exportBundles: '/images/export-bundles.webp',
-  rawMaterialFsc: '/images/raw-material.webp',
-  finishedProducts: '/images/finished-products.webp',
-  logisticsBase: '/images/logistics-base.webp',
+  heroLogs: siteAsset('/images/hero-logs.webp'),
+  sawingLine: siteAsset('/images/sawing-line.webp'),
+  logYard: siteAsset('/images/log-yard.webp'),
+  sortedPiles: siteAsset('/images/sorted-piles.webp'),
+  exportBundles: siteAsset('/images/export-bundles.webp'),
+  rawMaterialFsc: siteAsset('/images/raw-material.webp'),
+  finishedProducts: siteAsset('/images/finished-products.webp'),
+  logisticsBase: siteAsset('/images/logistics-base.webp'),
 };
 
 export const TIMBER_GRADES: GradeDetail[] = [
@@ -57,7 +59,7 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Sound tight knots <= 15mm. Max 1 knot per meter length.',
     surfaceFinish: '4-side clean cut or smooth calibrated planar surface.',
     primaryUses: ['Glulam laminations', 'Window and door profiles', 'Interior visible rafters', 'High-end furniture components'],
-    textureImage: '/images/finished-products.webp',
+    textureImage: siteAsset('/images/finished-products.webp'),
     realProductImage: OFFICIAL_IMAGES.finishedProducts,
     marketName: 'Nordic / European Class A Select',
   },
@@ -70,7 +72,7 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Sound tight knots up to 35mm. No rot or blue-stain.',
     surfaceFinish: 'Sharp-edged band-sawn or calibrated thickness.',
     primaryUses: ['Residential roof trusses & rafters', 'Structural formwork and scaffolding', 'Middle East construction market (White Wood)', 'Timber frame housing'],
-    textureImage: '/images/sawing-line.webp',
+    textureImage: siteAsset('/images/sawing-line.webp'),
     realProductImage: OFFICIAL_IMAGES.sawingLine,
     marketName: 'Middle East & Gulf Standard White Wood (خشب أبيض)',
   },
@@ -83,7 +85,7 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Larger sound knots and bark pockets permitted within strength thresholds.',
     surfaceFinish: 'Band-sawn standard industrial finish.',
     primaryUses: ['Heavy-duty EURO pallets (EPAL standard)', 'Electrical cable drums and reels', 'Industrial export crating', 'Temporary earth retention'],
-    textureImage: '/images/sorted-piles.webp',
+    textureImage: siteAsset('/images/sorted-piles.webp'),
     realProductImage: OFFICIAL_IMAGES.logYard,
     marketName: 'Industrial Packaging & Pallet Grade',
   },

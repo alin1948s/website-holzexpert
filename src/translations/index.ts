@@ -168,6 +168,7 @@ export const translations: Record<Language, {
     submitQuote: string;
     downloadPdf: string;
     submitting: string;
+    submitError: string;
     successTitle: string;
     successMessage: string;
   };
@@ -353,8 +354,9 @@ export const translations: Record<Language, {
       submitQuote: "Submit Official RFQ to Commercial Board",
       downloadPdf: "Export RFQ as Technical PDF Specification",
       submitting: "Transmitting RFQ & Generating Manifest...",
-      successTitle: "RFQ Successfully Dispatched to Export Desk!",
-      successMessage: "Your inquiry has been assigned an internal tracking reference. Our Constanța logistics desk and commercial sales director will transmit formal proforma CIF/FOB pricing.",
+      submitError: "We couldn't save your request. Please try again or email sales@holzexpert.com.",
+      successTitle: "RFQ Recorded Successfully!",
+      successMessage: "Your request has been saved with an internal tracking reference. Our commercial team will review it and follow up with a CIF/FOB quotation.",
     },
     footer: {
       legalName: "Holz Expert Industry S.R.L.",
@@ -538,8 +540,9 @@ export const translations: Record<Language, {
       submitQuote: "Transmite Cererea Fermă către Departamentul Comercial",
       downloadPdf: "Descarcă Fișa Tehnică RFQ (Format PDF)",
       submitting: "Se transmite cererea și se generează fișa...",
+      submitError: "Cererea nu a putut fi salvată. Încearcă din nou sau scrie la sales@holzexpert.com.",
       successTitle: "Cererea a Fost Înregistrată cu Succes!",
-      successMessage: "Solicitarea dvs. a fost trimisă biroului de vânzări internaționale. Veți primi oferta fermă proformă CIF/FOB în cel mai scurt timp.",
+      successMessage: "Solicitarea a fost înregistrată cu un cod intern. Echipa comercială o va verifica și va reveni cu o ofertă CIF/FOB.",
     },
     footer: {
       legalName: "Holz Expert Industry S.R.L.",
@@ -723,8 +726,9 @@ export const translations: Record<Language, {
       submitQuote: "Verbindliche RFQ an das Export-Desk Senden",
       downloadPdf: "RFQ als Technische PDF-Spezifikation Exportieren",
       submitting: "Anfrage wird übermittelt...",
-      successTitle: "RFQ Erfolgreich Übermittelt!",
-      successMessage: "Ihre Anfrage wurde an unser Export-Desk übermittelt. Unser kaufmännischer Direktor wird Ihnen zeitnah ein Proforma-Angebot unterbreiten.",
+      submitError: "Die Anfrage konnte nicht gespeichert werden. Bitte erneut versuchen oder sales@holzexpert.com schreiben.",
+      successTitle: "Anfrage erfolgreich gespeichert!",
+      successMessage: "Ihre Anfrage wurde mit einer internen Referenz gespeichert. Unser Vertrieb prüft sie und meldet sich mit einem CIF/FOB-Angebot.",
     },
     footer: {
       legalName: "Holz Expert Industry S.R.L.",
@@ -908,8 +912,9 @@ export const translations: Record<Language, {
       submitQuote: "إرسال طلب التسعير الرسمي إلى مكتب التصدير",
       downloadPdf: "تصدير المواصفة كملف فني PDF",
       submitting: "جارٍ إرسال الطلب وإعداد البيانات...",
-      successTitle: "تم تسجيل وإرسال طلب التسعير بنجاح!",
-      successMessage: "تم تحويل طلبكم إلى قسم المبيعات الدولية في ميناء كونستانتسا. سيتم التواصل معكم وتزويدكم بعرض سعر CIF/FOB رسمي.",
+      submitError: "تعذر حفظ طلبك. يُرجى المحاولة مرة أخرى أو مراسلة sales@holzexpert.com.",
+      successTitle: "تم تسجيل طلب التسعير بنجاح!",
+      successMessage: "تم حفظ طلبكم برقم مرجعي داخلي. سيقوم فريق المبيعات بمراجعته والتواصل معكم بعرض CIF/FOB.",
     },
     footer: {
       legalName: "شركة هولتز إكسبرت إندستري المحدودة (Holz Expert Industry S.R.L.)",

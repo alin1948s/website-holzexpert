@@ -1,0 +1,453 @@
+.ha-page,
+.ha-login-page {
+  --ha-ink: #26372d;
+  --ha-muted: #6b756e;
+  --ha-line: #e4e1d8;
+  --ha-paper: #f6f5f0;
+  --ha-card: #fffefa;
+  --ha-forest: #294a37;
+  --ha-forest-dark: #1e392b;
+  --ha-amber: #a66a3d;
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: var(--ha-paper);
+  color: var(--ha-ink);
+  font-family: "DM Sans", Inter, system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.ha-page *,
+.ha-login-page * { box-sizing: border-box; }
+
+.ha-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ha-header {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  border-bottom: 1px solid var(--ha-line);
+  background: rgba(255, 254, 250, 0.96);
+  backdrop-filter: blur(14px);
+}
+
+.ha-header-inner,
+.ha-content {
+  width: min(1120px, calc(100% - 48px));
+  margin-inline: auto;
+}
+
+.ha-header-inner {
+  display: flex;
+  min-height: 72px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.ha-login-brand {
+  display: inline-flex;
+  min-width: 0;
+  align-items: center;
+  gap: 11px;
+  color: var(--ha-ink);
+  text-decoration: none;
+}
+
+.ha-brand-mark {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  place-items: center;
+  border-radius: 9px;
+  background: #db8a35;
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.ha-login-brand strong,
+.ha-login-brand small { display: block; }
+.ha-login-brand strong { font-size: 13px; letter-spacing: 0.06em; line-height: 1.15; }
+.ha-login-brand small { margin-top: 3px; color: var(--ha-muted); font-size: 9px; letter-spacing: 0.1em; }
+
+.ha-header-actions,
+.ha-toolbar-actions { display: flex; align-items: center; gap: 9px; }
+
+.ha-secure-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding-right: 13px;
+  color: var(--ha-muted);
+  font-size: 12px;
+}
+
+.ha-secure-label svg { color: #52714f; }
+
+.ha-button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0 14px;
+  background: transparent;
+  color: var(--ha-ink);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  text-decoration: none;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+.ha-button:disabled { cursor: not-allowed; opacity: 0.52; }
+.ha-button:not(:disabled):active { transform: translateY(1px); }
+.ha-button--quiet { border-color: var(--ha-line); background: var(--ha-card); }
+.ha-button--quiet:hover { border-color: #c7cbbf; background: white; }
+.ha-button--primary { background: var(--ha-forest); color: white; }
+.ha-button--primary:hover:not(:disabled) { background: var(--ha-forest-dark); }
+.ha-button--details { min-height: 38px; border-color: var(--ha-line); padding-inline: 12px; background: white; font-size: 13px; }
+.ha-button--details:hover { border-color: #adb9a8; background: #f7f8f3; }
+.ha-logout { color: #58635b; }
+
+.ha-content { padding-top: 42px; padding-bottom: 28px; }
+
+.ha-page-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+  margin-bottom: 25px;
+}
+
+.ha-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #6a765f;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.13em;
+}
+
+.ha-page-heading h1,
+.ha-login-card h1 {
+  margin: 7px 0 3px;
+  color: var(--ha-ink);
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(30px, 4vw, 40px);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.13;
+}
+
+.ha-page-heading p,
+.ha-login-copy { margin: 0; color: var(--ha-muted); font-size: 14px; }
+.ha-toolbar-actions { flex: 0 0 auto; }
+
+.ha-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-bottom: 22px;
+}
+
+.ha-stat-card {
+  display: grid;
+  min-height: 117px;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  border: 1px solid var(--ha-line);
+  border-radius: 11px;
+  padding: 15px 18px;
+  background: var(--ha-card);
+}
+
+.ha-stat-card > span { color: var(--ha-muted); font-size: 12px; font-weight: 650; }
+.ha-stat-card > strong { grid-row: 2 / 4; align-self: center; color: var(--ha-ink); font-size: 30px; font-weight: 720; line-height: 1; }
+.ha-stat-card > small { align-self: end; color: #869087; font-size: 11px; text-align: right; }
+.ha-stat-card--new > strong { color: #a56b34; }
+.ha-stat-card--active > strong { color: #426c4a; }
+
+.ha-orders-panel {
+  overflow: hidden;
+  border: 1px solid var(--ha-line);
+  border-radius: 12px;
+  background: var(--ha-card);
+  box-shadow: 0 8px 28px rgba(43, 55, 44, 0.035);
+}
+
+/* The public site has broad editorial h2/section rules; keep the admin hierarchy compact. */
+main.ha-page section:not(#hero).ha-page-heading {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+main.ha-page section:not(#hero) .ha-panel-heading h2 {
+  margin: 0;
+  color: var(--ha-ink) !important;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+main.ha-page section:not(#hero) .ha-dialog-header h2 {
+  margin: 4px 0 0;
+  color: var(--ha-ink) !important;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 750;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.ha-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 19px 20px 15px;
+}
+
+.ha-panel-heading h2 { margin: 0; color: var(--ha-ink); font-size: 16px; font-weight: 750; }
+.ha-panel-heading p { margin: 3px 0 0; color: var(--ha-muted); font-size: 12px; }
+
+.ha-search {
+  display: flex;
+  width: min(325px, 42%);
+  min-height: 42px;
+  align-items: center;
+  gap: 9px;
+  border: 1px solid var(--ha-line);
+  border-radius: 8px;
+  padding: 0 11px;
+  background: #fff;
+  color: #79847b;
+}
+
+.ha-search:focus-within { border-color: #879a80; box-shadow: 0 0 0 3px rgba(92, 121, 84, 0.12); }
+.ha-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ha-ink); font: inherit; font-size: 13px; }
+.ha-search input::placeholder { color: #969e96; }
+.ha-search input::-webkit-search-cancel-button { display: none; }
+.ha-search button { display: grid; width: 26px; height: 26px; flex: 0 0 26px; place-items: center; border: 0; border-radius: 5px; background: transparent; color: var(--ha-muted); cursor: pointer; }
+
+.ha-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  border-bottom: 1px solid var(--ha-line);
+  padding: 0 20px 13px;
+}
+
+.ha-filters button {
+  display: inline-flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: transparent;
+  color: #657168;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.ha-filters button:hover { background: #f6f6f1; color: var(--ha-ink); }
+.ha-filters button.is-active { border-color: #d5dfd1; background: #eef3eb; color: #2e543a; }
+.ha-filters button > span { display: inline-grid; min-width: 19px; height: 19px; place-items: center; border-radius: 5px; padding: 0 4px; background: rgba(35, 55, 42, 0.07); font-size: 10px; }
+.ha-mobile-filter { display: none; }
+
+.ha-order-list { padding-inline: 20px; }
+
+.ha-order-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #eeece5;
+  padding: 17px 0;
+}
+
+.ha-order-card:last-child { border-bottom: 0; }
+.ha-order-main { min-width: 0; flex: 1; }
+.ha-order-title-line { display: flex; min-width: 0; align-items: center; gap: 9px; }
+.ha-order-ref { color: #8a6b4c; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.02em; }
+.ha-status { display: inline-flex; min-height: 23px; align-items: center; gap: 6px; border: 1px solid transparent; border-radius: 99px; padding: 1px 8px; font-size: 10px; font-weight: 700; white-space: nowrap; }
+.ha-status i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.ha-status--noua { border-color: #ead4b5; background: #fbf2e6; color: #9b652c; }
+.ha-status--in_lucru { border-color: #c9d9e4; background: #eef4f7; color: #4b7085; }
+.ha-status--ofertata { border-color: #d3d9bd; background: #f2f4e9; color: #697944; }
+.ha-status--castigata { border-color: #c4dacd; background: #edf5ef; color: #3d724d; }
+.ha-status--inchisa { border-color: #dadbd5; background: #f2f2ef; color: #71776f; }
+.ha-order-card h3 { overflow: hidden; margin: 5px 0 1px; color: var(--ha-ink); font-size: 15px; font-weight: 720; text-overflow: ellipsis; white-space: nowrap; }
+.ha-order-contact { margin: 0; color: var(--ha-muted); font-size: 12px; }
+.ha-order-contact span { padding-inline: 3px; color: #acb2a9; }
+.ha-order-facts { display: flex; flex-wrap: wrap; gap: 8px 15px; margin-top: 9px; color: #616d63; font-size: 11px; }
+.ha-order-facts > span { display: inline-flex; align-items: center; gap: 5px; }
+.ha-order-facts svg { color: #889486; }
+.ha-order-port { color: #526858 !important; }
+.ha-order-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 6px; }
+
+.ha-icon-button {
+  display: inline-grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid var(--ha-line);
+  border-radius: 8px;
+  background: #fff;
+  color: #5e7061;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.ha-icon-button:hover { border-color: #b7c2b0; background: #f6f8f3; color: var(--ha-forest); }
+
+.ha-panel-footer {
+  display: flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--ha-line);
+  padding: 8px 20px;
+  color: #858d84;
+  font-size: 10px;
+}
+
+.ha-panel-footer > span:first-child { display: inline-flex; align-items: center; gap: 6px; }
+.ha-panel-footer svg { color: #6e8667; }
+.ha-footer { padding-top: 18px; color: #858d84; font-size: 11px; text-align: center; }
+.ha-footer span { padding-inline: 5px; }
+
+.ha-empty-state { display: grid; min-height: 240px; align-content: center; justify-items: center; padding: 32px 20px; text-align: center; }
+.ha-empty-state > svg { margin-bottom: 8px; color: #78906f; }
+.ha-empty-icon { display: grid; width: 45px; height: 45px; place-items: center; margin-bottom: 8px; border-radius: 50%; background: #eef3eb; color: #56734e; }
+.ha-empty-state h3 { margin: 4px 0; color: var(--ha-ink); font-size: 15px; }
+.ha-empty-state p { max-width: 360px; margin: 3px 0 0; color: var(--ha-muted); font-size: 12px; }
+
+.ha-alert { display: flex; align-items: flex-start; gap: 9px; border-radius: 8px; padding: 12px 13px; font-size: 12px; line-height: 1.55; }
+.ha-alert--warning { border: 1px solid #ead9b9; background: #fcf6e9; color: #715a31; }
+.ha-alert--warning svg { flex: 0 0 auto; margin-top: 1px; }
+.ha-alert--error { border: 1px solid #ebc9c1; background: #fbefec; color: #8e4030; }
+.ha-load-error { margin: 14px 20px 0; }
+.ha-toast { position: fixed; z-index: 60; right: 20px; bottom: 20px; max-width: calc(100vw - 40px); border: 1px solid #cddbcc; border-radius: 9px; padding: 12px 16px; background: #f0f6ed; box-shadow: 0 8px 24px rgba(31, 48, 36, 0.13); color: #36543a; font-size: 13px; }
+
+.ha-dialog-backdrop { position: fixed; z-index: 50; inset: 0; display: grid; place-items: center; padding: 24px; background: rgba(21, 31, 24, 0.52); }
+.ha-dialog { display: flex; width: min(630px, 100%); max-height: min(860px, calc(100dvh - 48px)); flex-direction: column; overflow: hidden; border: 1px solid var(--ha-line); border-radius: 13px; background: var(--ha-card); box-shadow: 0 24px 80px rgba(15, 25, 18, 0.28); }
+.ha-dialog-header { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--ha-line); padding: 17px 20px; }
+.ha-dialog-header h2 { margin: 4px 0 0; font-size: 18px; }
+.ha-dialog-body { overflow-y: auto; padding: 18px 20px; overscroll-behavior: contain; }
+.ha-detail-client { display: grid; gap: 2px; margin-bottom: 16px; }
+.ha-detail-client > span,
+.ha-detail-block > span { color: #818b81; font-size: 10px; font-weight: 750; letter-spacing: 0.1em; }
+.ha-detail-client > strong { color: var(--ha-ink); font-size: 17px; }
+.ha-detail-client > small { color: var(--ha-muted); font-size: 12px; }
+.ha-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border-block: 1px solid var(--ha-line); padding-block: 14px; }
+.ha-detail-grid > div { display: grid; align-content: start; gap: 3px; min-width: 0; }
+.ha-detail-grid > div > span { color: var(--ha-muted); font-size: 11px; }
+.ha-detail-grid > div > strong,
+.ha-detail-grid > div > a { overflow-wrap: anywhere; color: var(--ha-ink); font-size: 12px; font-weight: 650; text-decoration: none; }
+.ha-detail-grid > div > a:hover { color: #41664b; text-decoration: underline; }
+.ha-detail-block { margin-top: 14px; }
+.ha-detail-block p { margin: 4px 0 0; color: #48564c; font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+.ha-edit-fields { display: grid; gap: 13px; margin-top: 18px; border-top: 1px solid var(--ha-line); padding-top: 15px; }
+.ha-edit-fields > label { display: grid; gap: 6px; color: #536057; font-size: 12px; font-weight: 700; }
+.ha-edit-fields select,
+.ha-edit-fields textarea,
+.ha-login-form input { width: 100%; min-height: 42px; border: 1px solid #dcded5; border-radius: 7px; padding: 9px 11px; background: white; color: var(--ha-ink); font: inherit; font-size: 13px; }
+.ha-edit-fields textarea { min-height: 94px; resize: vertical; line-height: 1.5; }
+.ha-edit-fields select:focus,
+.ha-edit-fields textarea:focus,
+.ha-login-form input:focus { outline: 3px solid rgba(89, 119, 82, 0.14); border-color: #82977c; }
+.ha-dialog-footer { display: flex; flex: 0 0 auto; justify-content: flex-end; gap: 8px; border-top: 1px solid var(--ha-line); padding: 13px 20px; background: #fffefa; }
+
+.ha-login-page { display: grid; place-items: center; padding: 24px; }
+.ha-login-card { width: min(440px, 100%); border: 1px solid var(--ha-line); border-radius: 14px; padding: 30px; background: var(--ha-card); box-shadow: 0 20px 65px rgba(41, 58, 45, 0.09); }
+.ha-login-card > .ha-eyebrow { margin-top: 30px; }
+.ha-login-card h1 { margin-top: 8px; font-size: 34px; }
+.ha-login-copy { margin-top: 8px; line-height: 1.65; }
+.ha-login-form { display: grid; gap: 9px; margin-top: 23px; }
+.ha-login-form > label { color: #536057; font-size: 12px; font-weight: 700; }
+.ha-login-submit { width: 100%; margin-top: 5px; }
+.ha-login-service-error { margin: 12px 0 0; color: #8e4030; font-size: 12px; }
+.ha-back-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 20px; color: #647168; font-size: 12px; text-decoration: none; }
+.ha-back-link:hover { color: var(--ha-forest); }
+.ha-login-card code { color: #624c2d; font-size: 11px; }
+.ha-loading { display: flex; min-height: 100vh; min-height: 100dvh; align-items: center; justify-content: center; gap: 10px; color: var(--ha-muted); font-size: 13px; }
+.ha-spin { animation: ha-spin 1s linear infinite; }
+@keyframes ha-spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 760px) {
+  .ha-header-inner,
+  .ha-content { width: min(100% - 32px, 600px); }
+  .ha-header-inner { min-height: 64px; gap: 10px; }
+  .ha-secure-label { display: none; }
+  .ha-site-link { display: none; }
+  .ha-content { padding-top: 28px; }
+  .ha-page-heading { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 19px; }
+  .ha-page-heading h1 { font-size: 32px; }
+  .ha-toolbar-actions { width: 100%; }
+  .ha-toolbar-actions > .ha-button { flex: 1; }
+  .ha-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; margin-bottom: 15px; }
+  .ha-stat-card { display: flex; min-height: 78px; flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px; padding: 9px; }
+  .ha-stat-card > span { font-size: 10px; }
+  .ha-stat-card > strong { grid-row: auto; align-self: flex-start; font-size: 25px; }
+  .ha-stat-card > small { display: none; }
+  .ha-orders-panel { border-radius: 10px; }
+  .ha-panel-heading { align-items: stretch; flex-direction: column; gap: 12px; padding: 16px 14px 12px; }
+  .ha-search { width: 100%; }
+  .ha-filters { display: none; }
+  .ha-mobile-filter { display: block; padding: 0 14px 12px; }
+  .ha-mobile-filter select { width: 100%; min-height: 40px; border: 1px solid var(--ha-line); border-radius: 8px; padding: 0 11px; background: white; color: var(--ha-ink); font: inherit; font-size: 12px; }
+  .ha-order-list { padding-inline: 12px; }
+  .ha-order-card { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 2px; }
+  .ha-order-main { width: 100%; }
+  .ha-order-card h3 { white-space: normal; }
+  .ha-order-facts { display: grid; gap: 6px; }
+  .ha-order-actions { width: 100%; }
+  .ha-order-actions .ha-button--details { flex: 1; }
+  .ha-order-actions .ha-icon-button { width: 42px; height: 42px; }
+  .ha-panel-footer { align-items: flex-start; flex-direction: column; gap: 4px; padding: 9px 14px; font-size: 10px; }
+  .ha-load-error { margin-inline: 14px; }
+  .ha-dialog-backdrop { align-items: end; padding: 0; }
+  .ha-dialog { width: 100%; max-height: 100dvh; border-radius: 14px 14px 0 0; }
+  .ha-dialog-header { padding: 15px 16px; }
+  .ha-dialog-body { padding: 16px; }
+  .ha-detail-grid { gap: 11px 13px; }
+  .ha-dialog-footer { padding: 11px 16px calc(11px + env(safe-area-inset-bottom)); }
+  .ha-dialog-footer .ha-button--primary { flex: 1; }
+  .ha-toast { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); left: 12px; max-width: none; text-align: center; }
+}
+
+@media (max-width: 380px) {
+  .ha-header-inner,
+  .ha-content { width: calc(100% - 24px); }
+  .ha-brand-mark { width: 34px; height: 34px; flex-basis: 34px; }
+  .ha-login-brand { gap: 8px; }
+  .ha-login-brand strong { font-size: 12px; }
+  .ha-logout { width: 40px; min-width: 40px; padding: 0; }
+  .ha-logout span { display: none; }
+  .ha-login-card { padding: 23px 19px; }
+  .ha-detail-grid { grid-template-columns: 1fr; }
+}

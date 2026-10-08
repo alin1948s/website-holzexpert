@@ -6,6 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "cloudflare:dev": "wrangler dev --config cloudflare/wrangler.toml --local --port 8787",
+    "cloudflare:deploy": "wrangler deploy --config cloudflare/wrangler.toml",
+    "cloudflare:db:apply:local": "wrangler d1 migrations apply holzexpert --local --config cloudflare/wrangler.toml",
+    "cloudflare:db:apply:remote": "wrangler d1 migrations apply holzexpert --remote --config cloudflare/wrangler.toml",
     "lint": "oxlint",
     "test": "vitest run",
     "preview": "vite preview"
@@ -34,6 +38,7 @@
     "oxlint": "^1.81.0",
     "typescript": "~6.0.2",
     "vite": "^8.3.0",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "wrangler": "^4.148.0"
   }
 }

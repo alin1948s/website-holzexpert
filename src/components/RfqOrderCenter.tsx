@@ -18,6 +18,7 @@ import { generateRfqPdf } from '../utils/pdfGenerator';
 import { translations } from '../translations';
 import { THICKNESS_OPTIONS, WIDTH_OPTIONS, LENGTH_OPTIONS } from '../data/timberData';
 import { EXPORT_DESTINATIONS } from '../data/routesData';
+import { holzApiUrl } from '../lib/holzApi';
 import { rfqSchema, type FormValues } from '../utils/validation';
 
 interface RfqOrderCenterProps {
@@ -35,12 +36,6 @@ const AVAILABLE_TREATMENTS = [
   { id: 'GS1 Barcode', label: 'GS1 Export Barcode Labeling on each bundle', default: false },
 ];
 
-let rfqCounter = 784200;
-function generateRfqRefCode(): string {
-  rfqCounter += 1;
-  return `HEI-RFQ-${rfqCounter}`;
-}
-
 export const RfqOrderCenter: React.FC<RfqOrderCenterProps> = ({
   currentLang,
   currency,
@@ -49,6 +44,7 @@ export const RfqOrderCenter: React.FC<RfqOrderCenterProps> = ({
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [submittedRefCode, setSubmittedRefCode] = useState<string>('');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string>('');
   const [highlightBadge, setHighlightBadge] = useState<string | null>(null);
   const isInternalPrefillUpdate = useRef(false);
 
@@ -170,20 +166,39 @@ export const RfqOrderCenter: React.FC<RfqOrderCenterProps> = ({
     }
   };
 
-  const onSubmit = (_data: FormValues) => {
-    const ref = generateRfqRefCode();
-    setSubmittedRefCode(ref);
-    setIsSubmitted(true);
-
+  const onSubmit = async (data: FormValues) => {
+    setSubmitError('');
     try {
-      confetti({
-        particleCount: 80,
-        spread: 70,
-        origin: { y: 0.6 },
-        colors: ['#F59E0B', '#F97316', '#38BDF8'],
+      const response = await fetch(holzApiUrl('orders'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, website_hp: '' }),
       });
-    } catch {
-      // ignore
+      let result: { status?: string; order?: { id?: string }; message?: string };
+      try {
+        result = await response.json() as { status?: string; order?: { id?: string }; message?: string };
+      } catch {
+        throw new Error(t.submitError);
+      }
+      if (!response.ok || result.status !== 'success' || !result.order?.id) {
+        throw new Error(response.status >= 500 ? t.submitError : (result.message || t.submitError));
+      }
+
+      setSubmittedRefCode(result.order.id);
+      setIsSubmitted(true);
+
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#F59E0B', '#F97316', '#38BDF8'],
+        });
+      } catch {
+        // The saved RFQ remains successful if the visual effect is unavailable.
+      }
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : t.submitError);
     }
   };
 
@@ -369,6 +384,10 @@ export const RfqOrderCenter: React.FC<RfqOrderCenterProps> = ({
                 {/* Left: Active Step Form Inputs */}
                 <div className="lg:col-span-8">
                   <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <div className="sr-only" aria-hidden="true">
+                      <label htmlFor="rfq-website-hp">Leave this field empty</label>
+                      <input id="rfq-website-hp" name="website_hp" type="text" tabIndex={-1} autoComplete="off" />
+                    </div>
                     {/* Hidden inputs to preserve full schema binding regardless of active step */}
                     <input type="hidden" {...register('approxVolumeM3', { valueAsNumber: true })} />
                     <input type="hidden" {...register('currency')} />
@@ -735,6 +754,7 @@ export const RfqOrderCenter: React.FC<RfqOrderCenterProps> = ({
                           </div>
                         </div>
 
+                        {submitError && <p className="rfq-submit-error" role="alert">{submitError}</p>}
                         <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
                           <button
                             type="button"
