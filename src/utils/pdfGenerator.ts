@@ -2,6 +2,33 @@ import { jsPDF } from 'jspdf';
 import type { RfqFormData } from '../types';
 import { COMPANY_DATA } from '../data/companyData';
 
+/**
+ * Transliterates diacritics & non-standard characters to clean ASCII
+ * so that standard PDF Helvetica prints crisp glyphs without distortion or '?' artifacts.
+ */
+export function cleanPdfText(str: string | undefined | null): string {
+  if (!str) return '';
+  return str
+    .replace(/[șş]/g, 's')
+    .replace(/[ȘŞ]/g, 'S')
+    .replace(/[țţ]/g, 't')
+    .replace(/[ȚŢ]/g, 'T')
+    .replace(/[ăâ]/g, 'a')
+    .replace(/[ĂÂ]/g, 'A')
+    .replace(/[îï]/g, 'i')
+    .replace(/[ÎÏ]/g, 'I')
+    .replace(/[éèêë]/g, 'e')
+    .replace(/[ÉÈÊË]/g, 'E')
+    .replace(/[äöü]/g, (c) => ({ ä: 'ae', ö: 'oe', ü: 'ue' }[c] || c))
+    .replace(/[ÄÖÜ]/g, (c) => ({ Ä: 'Ae', Ö: 'Oe', Ü: 'Ue' }[c] || c))
+    .replace(/[ß]/g, 'ss')
+    .replace(/[""]/g, '"')
+    .replace(/['']/g, "'")
+    .replace(/[–—]/g, '-')
+    .replace(/[•]/g, '-')
+    .replace(/[\u0600-\u06FF]/g, ''); // strip unsupported arabic script glyphs in ascii pdf
+}
+
 export function generateRfqPdf(data: RfqFormData): string {
   const doc = new jsPDF({
     orientation: 'portrait',
@@ -30,8 +57,16 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.setFontSize(9);
   doc.setTextColor(226, 232, 240);
   doc.text('INDUSTRIAL SOFTWOOD SAWMILL & DEEP-SEA MARITIME EXPORT TERMINAL', 14, 22);
-  doc.text(`HQ: ${COMPANY_DATA.headquarters.address}, ${COMPANY_DATA.headquarters.county} | Terminal: Port Constanța Sud - Agigea`, 14, 27);
-  doc.text(`Fiscal ID: ${COMPANY_DATA.fiscalCode} | Reg: ${COMPANY_DATA.tradeRegister} | Phone: ${COMPANY_DATA.contacts.phoneMain}`, 14, 32);
+  doc.text(
+    cleanPdfText(`HQ: ${COMPANY_DATA.headquarters.address}, ${COMPANY_DATA.headquarters.county} | Terminal: Port Constanta Sud - Agigea`),
+    14,
+    27
+  );
+  doc.text(
+    cleanPdfText(`Fiscal ID: ${COMPANY_DATA.fiscalCode} | Reg: ${COMPANY_DATA.tradeRegister} | Phone: ${COMPANY_DATA.contacts.phoneMain}`),
+    14,
+    32
+  );
 
   // Document Badge
   doc.setFillColor(249, 115, 22);
@@ -54,7 +89,11 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.setFontSize(8.5);
   doc.setFont('helvetica', 'normal');
   doc.setTextColor(100, 116, 139);
-  doc.text(`Issued on: ${dateStr} | Status: OFFICIAL B2B RFQ | Preferred Currency: ${data.currency}`, 14, y);
+  doc.text(
+    cleanPdfText(`Issued on: ${dateStr} | Status: OFFICIAL B2B RFQ | Preferred Currency: ${data.currency}`),
+    14,
+    y
+  );
 
   // Buyer Info Box
   y += 8;
@@ -71,13 +110,13 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.setFontSize(8.5);
   doc.setTextColor(51, 65, 85);
 
-  doc.text(`Company Name: ${data.companyName || 'Not specified'}`, 18, y + 13);
-  doc.text(`Representative: ${data.contactPerson || 'Not specified'}`, 18, y + 19);
-  doc.text(`Corporate Email: ${data.email || 'Not specified'}`, 18, y + 25);
+  doc.text(cleanPdfText(`Company Name: ${data.companyName || 'Not specified'}`), 18, y + 13);
+  doc.text(cleanPdfText(`Representative: ${data.contactPerson || 'Not specified'}`), 18, y + 19);
+  doc.text(cleanPdfText(`Corporate Email: ${data.email || 'Not specified'}`), 18, y + 25);
 
-  doc.text(`Country: ${data.country || 'International'}`, 110, y + 13);
-  doc.text(`Phone / WhatsApp: ${data.phoneCountryCode} ${data.phoneNumber}`, 110, y + 19);
-  doc.text(`Discharge Port (POD): ${data.destinationPort || 'Direct Port Delivery'}`, 110, y + 25);
+  doc.text(cleanPdfText(`Country: ${data.country || 'International'}`), 110, y + 13);
+  doc.text(cleanPdfText(`Phone / WhatsApp: ${data.phoneCountryCode} ${data.phoneNumber}`), 110, y + 19);
+  doc.text(cleanPdfText(`Discharge Port (POD): ${data.destinationPort || 'Direct Port Delivery'}`), 110, y + 25);
 
   // Logistics & Freight Parameters
   y += 40;
@@ -97,15 +136,15 @@ export function generateRfqPdf(data: RfqFormData): string {
     ? "Maritime 40' High Cube Ocean Container"
     : "Standard European Mega-Tautliner (13.6m)";
 
-  doc.text(`Freight Mode: ${transportLabel}`, 18, y + 13);
-  doc.text(`Incoterm Requested: ${data.incoterm} (${data.incoterm === 'FOB' ? 'Port Constanța Sud' : data.destinationPort})`, 18, y + 19);
-  doc.text(`Requested Volume: ${data.volumeContainers} ${data.transportType === 'container_40hc' ? 'Container(s) 40\' HC' : 'Mega-Truck(s)'}`, 18, y + 25);
-  doc.text(`Approx Net Cargo Volume: ~${data.approxVolumeM3} m³`, 18, y + 31);
+  doc.text(cleanPdfText(`Freight Mode: ${transportLabel}`), 18, y + 13);
+  doc.text(cleanPdfText(`Incoterm Requested: ${data.incoterm} (${data.incoterm === 'FOB' ? 'Port Constanta Sud' : data.destinationPort})`), 18, y + 19);
+  doc.text(cleanPdfText(`Requested Volume: ${data.volumeContainers} ${data.transportType === 'container_40hc' ? "Container(s) 40' HC" : "Mega-Truck(s)"}`), 18, y + 25);
+  doc.text(cleanPdfText(`Approx Net Cargo Volume: ~${data.approxVolumeM3} m3`), 18, y + 31);
 
-  doc.text(`Origin Sawmill: Gălănești Platform, Suceava, RO`, 110, y + 13);
-  doc.text(`Export Port: Constanța Sud - Agigea Terminal`, 110, y + 19);
-  doc.text(`Estimated Delivery Window: ${data.deliveryTimeline || 'Within 14-21 days of L/C / DP'}`, 110, y + 25);
-  doc.text(`Customs Tracking: Bill of Lading (B/L) & EUR.1 / ATR`, 110, y + 31);
+  doc.text(cleanPdfText('Origin Sawmill: Galanesti Platform, Suceava, RO'), 110, y + 13);
+  doc.text(cleanPdfText('Export Port: Constanta Sud - Agigea Terminal'), 110, y + 19);
+  doc.text(cleanPdfText(`Estimated Delivery Window: ${data.deliveryTimeline || 'Within 14-21 days of L/C / DP'}`), 110, y + 25);
+  doc.text(cleanPdfText('Customs Tracking: Bill of Lading (B/L) & EUR.1 / ATR'), 110, y + 31);
 
   // Technical Timber Specifications Table
   y += 42;
@@ -123,14 +162,18 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.text('PARAMETER', 18, y + 5);
   doc.text('AGREED SPECIFICATION DETAIL', 90, y + 5);
 
+  const treatmentsText = data.treatments && data.treatments.length > 0
+    ? data.treatments.join(', ')
+    : 'Anti-UV plastic hooded top & heavy PET strapped bundles';
+
   const rows = [
     ['Botanical Wood Species', 'Picea Abies (Carpathian Spruce / White Wood)'],
-    ['European Quality Grade', `${data.grade} (Visual grading according to EN 1611-1:2002)`],
-    ['Nominal Cross-Section', `${data.thickness}mm (T) × ${data.width}mm (W) × ${data.length}m (L)`],
-    ['Moisture Equilibrium', data.moisture === 'kd_18' ? 'KD 18% ± 2% (Automated Mühlböck Kiln Dried)' : 'Fresh Cut / Green (Log Run)'],
-    ['Phytosanitary Standard', 'HT ISPM-15 Heat Treated (56°C / 30 min minimum core)'],
-    ['Chain of Custody', 'FSC® 100% Certified (FSC-C119854) - 100% Carpathian Forest'],
-    ['Protection & Packaging', data.treatments.length > 0 ? data.treatments.join(', ') : 'Anti-UV plastic hooded top & heavy PET strapped bundles'],
+    ['European Quality Grade', `${cleanPdfText(data.grade)} (Visual grading according to EN 1611-1:2002)`],
+    ['Nominal Cross-Section', `${data.thickness}mm (T) x ${data.width}mm (W) x ${data.length}m (L)`],
+    ['Moisture Equilibrium', data.moisture === 'kd_18' ? 'KD 18% +/- 2% (Automated Muhlboeck Kiln Dried)' : 'Fresh Cut / Green (Log Run)'],
+    ['Phytosanitary Standard', 'HT ISPM-15 Heat Treated (56 deg C / 30 min minimum core)'],
+    ['Chain of Custody', 'FSC 100% Certified (FSC-C119854) - 100% Carpathian Forest'],
+    ['Protection & Packaging', cleanPdfText(treatmentsText)],
   ];
 
   y += 7;
@@ -143,8 +186,8 @@ export function generateRfqPdf(data: RfqFormData): string {
       doc.setFillColor(241, 245, 249);
       doc.rect(14, y, 182, 6, 'F');
     }
-    doc.text(row[0], 18, y + 4.2);
-    doc.text(row[1], 90, y + 4.2);
+    doc.text(cleanPdfText(row[0]), 18, y + 4.2);
+    doc.text(cleanPdfText(row[1]), 90, y + 4.2);
     y += 6;
   });
 
@@ -158,7 +201,7 @@ export function generateRfqPdf(data: RfqFormData): string {
     doc.setFont('helvetica', 'italic');
     doc.setFontSize(8);
     doc.setTextColor(71, 85, 105);
-    doc.text(data.specialRequirements.slice(0, 180), 14, y + 5);
+    doc.text(cleanPdfText(data.specialRequirements.slice(0, 180)), 14, y + 5);
     y += 8;
   } else {
     y += 2;
@@ -182,7 +225,7 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.setTextColor(100, 116, 139);
   doc.text('Holz Expert Industry S.R.L. - Export Board', 18, y + 4);
   doc.text('Direct: sales@holzexpert.com | +40 751 012 082', 18, y + 8);
-  doc.text('Constanța Port Terminal Staging Division', 18, y + 12);
+  doc.text('Constanta Port Terminal Staging Division', 18, y + 12);
 
   doc.text('Authorized Corporate Signature & Stamp:', 110, y + 4);
   doc.rect(110, y + 8, 65, 16);
@@ -194,10 +237,16 @@ export function generateRfqPdf(data: RfqFormData): string {
   doc.setTextColor(148, 163, 184);
   doc.setFontSize(7);
   doc.text('This document constitutes an official preliminary export specification sheet issued by Holz Expert Industry S.R.L.', 14, 287);
-  doc.text('Subject to vessel slot booking and phytosanitary container stuffing confirmation at Port Constanța Sud - Agigea.', 14, 291);
+  doc.text('Subject to vessel slot booking and phytosanitary container stuffing confirmation at Port Constanta Sud - Agigea.', 14, 291);
 
   // Save / Return data uri or trigger download
   const filename = `HolzExpert_Specification_${refCode}.pdf`;
-  doc.save(filename);
+  if (typeof window !== 'undefined' && typeof doc.save === 'function') {
+    try {
+      doc.save(filename);
+    } catch {
+      // In SSR or non-standard environments
+    }
+  }
   return refCode;
 }

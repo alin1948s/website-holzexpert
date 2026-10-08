@@ -23,6 +23,7 @@ export interface GradeDetail {
   surfaceFinish: string;
   primaryUses: string[];
   textureImage: string;
+  realProductImage?: string;
   marketName: string;
 }
 
@@ -78,6 +79,8 @@ export interface LogisticsPortDestination {
   primaryIncoterms: string[];
   containerFrequency: string;
   coordinates: { x: number; y: number }; // normalized 0-100 for SVG route map
+  geoCoordinates?: { lat: number; lng: number }; // Real WGS84 coordinates for Leaflet
+  nauticalMiles?: number;
   customsNote: string;
 }
 
@@ -103,3 +106,5 @@ export interface RfqFormData {
   currency: Currency;
   deliveryTimeline: string;
 }
+
+export type OperationsTab = 'simulator' | 'virtual-yard' | 'logistics';

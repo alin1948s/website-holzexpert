@@ -1,17 +1,20 @@
 import { useState, useEffect } from 'react';
+import { Box, ChevronRight } from 'lucide-react';
 import type { Currency, Language, MoistureCondition, RfqFormData, TimberGrade, TransportType, VirtualYardBatch } from './types';
+import { translations } from './translations';
 import { TopUtilityBar } from './components/TopUtilityBar';
 import { IndustrialHeader } from './components/IndustrialHeader';
 import { HeroSection } from './components/HeroSection';
-import { CargoSimulator } from './components/CargoSimulator';
-import { TimberCatalog } from './components/TimberCatalog';
 import { SawmillPower } from './components/SawmillPower';
+import { TimberCatalog } from './components/TimberCatalog';
 import { ExportRouteVisualizer } from './components/ExportRouteVisualizer';
+import { CargoSimulator } from './components/CargoSimulator';
 import { VirtualYardBoard } from './components/VirtualYardBoard';
 import { RfqOrderCenter } from './components/RfqOrderCenter';
 import { IndustrialFooter } from './components/IndustrialFooter';
 import { CertificateModal } from './components/CertificateModal';
 import { generateRfqPdf } from './utils/pdfGenerator';
+import { EXPORT_DESTINATIONS } from './data/routesData';
 
 export function App() {
   const [currentLang, setCurrentLang] = useState<Language>('en');
@@ -49,6 +52,8 @@ export function App() {
     volumeM3: number;
     weightTonnes: number;
   }) => {
+    const defaultCapacity = specs.transportType === 'container_40hc' ? 50 : 33.5;
+    const containersCount = Math.max(1, Math.round(specs.volumeM3 / defaultCapacity));
     setPrefillRfqData({
       transportType: specs.transportType,
       thickness: specs.thickness,
@@ -56,7 +61,12 @@ export function App() {
       length: specs.length,
       moisture: specs.moisture,
       approxVolumeM3: specs.volumeM3,
-      volumeContainers: specs.transportType === 'container_40hc' ? Math.max(1, Math.round(specs.volumeM3 / 50)) : 1,
+      volumeContainers: containersCount,
+      incoterm: specs.transportType === 'container_40hc' ? 'CIF' : 'DAP',
+      treatments: specs.moisture === 'kd_18'
+        ? ['KD 18%', 'HT ISPM-15', 'Anti-UV Foil', 'PET Strapping']
+        : ['HT ISPM-15', 'Anti-Blue', 'PET Strapping'],
+      specialRequirements: `Stowage Configuration locked: ${specs.bundles} bundles (~${specs.volumeM3} m³, ~${specs.weightTonnes} tonnes)`,
     });
     handleNavigateToSection('rfq');
   };
@@ -70,17 +80,22 @@ export function App() {
       grade: batch.grade,
       moisture: batch.moisture,
       approxVolumeM3: batch.volumeM3,
-      specialRequirements: `Inquiry for Batch: ${batch.batchCode} (${batch.locationName}) - Available ${batch.volumeM3} m³`,
+      volumeContainers: Math.max(1, Math.round(batch.volumeM3 / 50)),
+      treatments: batch.treatment,
+      specialRequirements: `Please confirm availability and current pricing for example lot ${batch.batchCode} (${batch.locationName}), ${batch.volumeM3} m³. Estimated dispatch: ${batch.etd}`,
     });
     handleNavigateToSection('rfq');
   };
 
   // 3. Port Inspector Selection -> Auto-populate RFQ
   const handleSelectDestinationPort = (portName: string) => {
+    const portObj = EXPORT_DESTINATIONS.find((p) => p.name === portName || p.id === portName);
     setPrefillRfqData((prev) => ({
       ...prev,
       destinationPort: portName,
+      country: portObj ? portObj.country : prev?.country,
       incoterm: 'CIF',
+      specialRequirements: `Direct ocean liner booking inquiry to ${portName}. Preferred shipping hub: Port Constanța Sud - Agigea.`,
     }));
     handleNavigateToSection('rfq');
   };
@@ -98,6 +113,7 @@ export function App() {
       width: spec.width,
       length: spec.length,
       grade: spec.grade,
+      specialRequirements: `Technical Catalog Selection: ${spec.thickness}×${spec.width}mm, ${spec.length.toFixed(1)}m (${spec.grade})`,
     }));
     handleNavigateToSection('rfq');
   };
@@ -129,7 +145,7 @@ export function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#090D16] text-slate-100 flex flex-col font-sans selection:bg-orange-500 selection:text-white">
+    <div className="site-shell">
       {/* 1. Top Utility Status & Language Bar */}
       <TopUtilityBar
         currentLang={currentLang}
@@ -138,52 +154,55 @@ export function App() {
         onCurrencyChange={setCurrency}
       />
 
-      {/* 2. Industrial Header / Navbar with FSC Badge */}
+      {/* 2. World-Class Corporate Navigation Menu */}
       <IndustrialHeader
         currentLang={currentLang}
+        currency={currency}
+        onLanguageChange={setCurrentLang}
+        onCurrencyChange={setCurrency}
         onOpenCertificateModal={handleOpenCertificateModal}
         onNavigateToSection={handleNavigateToSection}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1">
-        {/* 3. Hero Section with Real Assets & KPI Ticker */}
+      {/* Main Content Area: Cohesive 10-Section B2B Architecture */}
+      <main className="site-main">
+        {/* 3. Editorial Corporate Hero */}
         <HeroSection
           currentLang={currentLang}
           onNavigateToSection={handleNavigateToSection}
         />
 
-        {/* 4. SHOWSTOPPER A: Interactive 3D/2.5D Cargo Loading Simulator */}
-        <CargoSimulator
+        {/* 4. About Holz Expert & Industrial Power (100,000 m² Gălănești Sawmill) */}
+        <SawmillPower
           currentLang={currentLang}
-          onLockInSpecification={handleLockInCargo}
         />
 
-        {/* 5. Technical Timber Catalog & EN 1611-1 Specs */}
+        {/* 5. Products & Technical Timber Specifications (EN 1611-1 Standards) */}
         <TimberCatalog
           currentLang={currentLang}
           onSelectSpecForRfq={handleSelectCatalogSpec}
           onOpenPdfDataSheet={handleDownloadTechDataSheet}
         />
 
-        {/* 6. Heavy Industrial Sawmill Infrastructure (Gălănești 100,000 m²) */}
-        <SawmillPower
-          currentLang={currentLang}
-        />
-
-        {/* 7. SHOWSTOPPER B: Interactive Maritime & Overland Corridors Visualizer */}
+        {/* 6. Port Constanța Sud - Agigea Maritime Export Hub */}
         <ExportRouteVisualizer
           currentLang={currentLang}
           onSelectDestinationPort={handleSelectDestinationPort}
         />
 
-        {/* 8. SHOWSTOPPER C: Live Virtual Yard & Production Batch Board */}
+        {/* 7. Interactive Cargo Loading Simulator */}
+        <CargoSimulator
+          currentLang={currentLang}
+          onLockInSpecification={handleLockInCargo}
+        />
+
+        {/* 8. Live Virtual Yard / Production Batches */}
         <VirtualYardBoard
           currentLang={currentLang}
           onReserveBatch={handleReserveBatchFromYard}
         />
 
-        {/* 9. High-Conversion RFQ & Export Order Center + PDF Spec Engine */}
+        {/* 9. Enterprise RFQ & Proforma Generator */}
         <RfqOrderCenter
           currentLang={currentLang}
           currency={currency}
@@ -191,7 +210,7 @@ export function App() {
         />
       </main>
 
-      {/* 10. Heavy Industrial Footer */}
+      {/* 10. Institutional Enterprise Footer */}
       <IndustrialFooter
         currentLang={currentLang}
         onOpenCertificateModal={handleOpenCertificateModal}
@@ -203,6 +222,24 @@ export function App() {
         onClose={() => setCertificateModalOpen(false)}
         certType={activeCertType}
       />
+
+      {/* Mobile Sticky Quick Action Bar */}
+      <aside aria-label="Quick actions" className="mobile-action-bar md:hidden">
+        <button
+          onClick={() => handleNavigateToSection('simulator')}
+          className="button button--quiet mobile-action-bar__secondary"
+        >
+          <Box aria-hidden="true" />
+          <span>{translations[currentLang].nav.simulator}</span>
+        </button>
+        <button
+          onClick={() => handleNavigateToSection('rfq')}
+          className="button button--primary mobile-action-bar__primary"
+        >
+          <span>{translations[currentLang].nav.requestQuoteBtn}</span>
+          <ChevronRight aria-hidden="true" />
+        </button>
+      </aside>
     </div>
   );
 }

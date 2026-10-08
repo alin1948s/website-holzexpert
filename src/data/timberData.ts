@@ -36,6 +36,17 @@ export const TRANSPORT_SPECS: Record<'container_40hc' | 'mega_truck_136', Transp
   },
 };
 
+export const OFFICIAL_IMAGES = {
+  heroLogs: '/images/hero-logs.webp',
+  sawingLine: '/images/sawing-line.webp',
+  logYard: '/images/log-yard.webp',
+  sortedPiles: '/images/sorted-piles.webp',
+  exportBundles: '/images/export-bundles.webp',
+  rawMaterialFsc: '/images/raw-material.webp',
+  finishedProducts: '/images/finished-products.webp',
+  logisticsBase: '/images/logistics-base.webp',
+};
+
 export const TIMBER_GRADES: GradeDetail[] = [
   {
     id: 'EN1611_CLASS_A',
@@ -46,7 +57,8 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Sound tight knots <= 15mm. Max 1 knot per meter length.',
     surfaceFinish: '4-side clean cut or smooth calibrated planar surface.',
     primaryUses: ['Glulam laminations', 'Window and door profiles', 'Interior visible rafters', 'High-end furniture components'],
-    textureImage: 'https://images.unsplash.com/photo-1546484396-fb3fc6f95f98?auto=format&fit=crop&w=800&q=80',
+    textureImage: '/images/finished-products.webp',
+    realProductImage: OFFICIAL_IMAGES.finishedProducts,
     marketName: 'Nordic / European Class A Select',
   },
   {
@@ -58,7 +70,8 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Sound tight knots up to 35mm. No rot or blue-stain.',
     surfaceFinish: 'Sharp-edged band-sawn or calibrated thickness.',
     primaryUses: ['Residential roof trusses & rafters', 'Structural formwork and scaffolding', 'Middle East construction market (White Wood)', 'Timber frame housing'],
-    textureImage: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80',
+    textureImage: '/images/sawing-line.webp',
+    realProductImage: OFFICIAL_IMAGES.sawingLine,
     marketName: 'Middle East & Gulf Standard White Wood (خشب أبيض)',
   },
   {
@@ -70,20 +83,8 @@ export const TIMBER_GRADES: GradeDetail[] = [
     allowedKnots: 'Larger sound knots and bark pockets permitted within strength thresholds.',
     surfaceFinish: 'Band-sawn standard industrial finish.',
     primaryUses: ['Heavy-duty EURO pallets (EPAL standard)', 'Electrical cable drums and reels', 'Industrial export crating', 'Temporary earth retention'],
-    textureImage: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80',
+    textureImage: '/images/sorted-piles.webp',
+    realProductImage: OFFICIAL_IMAGES.logYard,
     marketName: 'Industrial Packaging & Pallet Grade',
   },
 ];
-
-export const OFFICIAL_IMAGES = {
-  logo: 'https://holzexpert.com/wp-content/uploads/2014/06/copy-logo-HolzExpertIndustry-300.png',
-  heroLogs: 'https://holzexpert.com/wp-content/uploads/2014/04/HEI-05.jpg',
-  sawingLine: 'https://holzexpert.com/wp-content/uploads/2014/06/HEI-03.jpg',
-  logYard: 'https://holzexpert.com/wp-content/uploads/2014/06/HEI-01.jpg',
-  sortedPiles: 'https://holzexpert.com/wp-content/uploads/2014/05/HEI-06.jpg',
-  exportBundles: 'https://holzexpert.com/wp-content/uploads/2014/06/HEI-04_cr-750x410.jpg',
-  rawMaterialFsc: 'https://holzexpert.com/wp-content/uploads/2014/06/Raw-material.jpg',
-  finishedProducts: 'https://holzexpert.com/wp-content/uploads/2014/06/Products.jpg',
-  exportFlowMap: 'https://holzexpert.com/wp-content/uploads/2014/06/Holz-Expert-Industry-EXPORT_21.jpg',
-  logisticsBase: 'https://holzexpert.com/wp-content/uploads/2014/06/DSC_4441-750x410.jpg',
-};

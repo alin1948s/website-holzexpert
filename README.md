@@ -1,32 +1,52 @@
-# React + TypeScript + Vite
+# Holz Expert
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+A multilingual B2B website for Holz Expert Industry S.R.L., focused on Romanian spruce timber, technical specifications and export logistics.
 
-Currently, two official plugins are available:
+## Screenshots
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Website — desktop (1440 × 1000)
 
-## React Compiler
+![Holz Expert website on desktop](docs/screenshots/website-desktop.png)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Website — mobile (390 × 844)
 
-## Expanding the Oxlint configuration
+![Holz Expert website on mobile](docs/screenshots/website-mobile.png)
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+### Mobile navigation, opened from the bottom of the page
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+![Mobile navigation menu opened at the bottom of the page](docs/screenshots/website-mobile-menu.png)
+
+## Admin page
+
+This repository currently contains the public website only. It does not include an admin dashboard or admin route, so there is no admin-page screenshot to show.
+
+## Main sections
+
+- Production platform and mill photography
+- Timber grades, dimensions and export treatments
+- Maritime routes and destination-port details
+- Cargo loading simulator
+- Example inventory lots with filters
+- Multi-step request-for-quotation form
+- Responsive mobile navigation and fixed quote actions
+
+## Run locally
+
+Requirements: Node.js and npm.
+
+```bash
+npm ci
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Create a production build with:
+
+```bash
+npm run build
+```
+
+Run the test suite with:
+
+```bash
+npm test
+```

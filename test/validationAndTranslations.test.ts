@@ -54,6 +54,22 @@ describe('B2B RFQ Form Validation Suite', () => {
     const parseResult = rfqSchema.safeParse(invalid);
     expect(parseResult.success).toBe(false);
   });
+
+  it('accepts all 4 supported Incoterms: FOB, CIF, CFR, DAP', () => {
+    const incoterms = ['FOB', 'CIF', 'CFR', 'DAP'] as const;
+    incoterms.forEach((term) => {
+      const data = { ...validData, incoterm: term };
+      const parseResult = rfqSchema.safeParse(data);
+      expect(parseResult.success, `Incoterm ${term} should be valid`).toBe(true);
+    });
+  });
+
+  it('rejects unsupported Incoterm like EXW or DDP', () => {
+    // @ts-expect-error Testing invalid runtime value
+    const invalid = { ...validData, incoterm: 'EXW' };
+    const parseResult = rfqSchema.safeParse(invalid);
+    expect(parseResult.success).toBe(false);
+  });
 });
 
 describe('Multilingual Consistency Suite', () => {
@@ -92,5 +108,14 @@ describe('Multilingual Consistency Suite', () => {
     const deSim = translations.de.simulator;
     expect(deSim.container40hc).toContain('40\' High Cube');
     expect(deSim.kd18).toContain('KD 18%');
+  });
+
+  it('ensures all corporate navigation menu items exist across all 4 languages', () => {
+    const navKeys = ['sawmill', 'specs', 'logistics', 'simulator', 'virtualYard', 'rfq', 'requestQuoteBtn'] as const;
+    supportedLanguages.forEach((lang) => {
+      navKeys.forEach((key) => {
+        expect(translations[lang].nav[key], `Nav key ${key} missing or empty in ${lang}`).toBeTruthy();
+      });
+    });
   });
 });
